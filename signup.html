@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up - Leave App</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <div class="form-box">
+    <h2>Student Sign Up</h2>
+    <form id="signupForm">
+      <input type="text" id="fullName" placeholder="Full Name" required>
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password (min 6 characters)" required>
+      
+      <!-- Roll Number Field -->
+      <div class="form-row">
+        <div class="form-col">
+          <select id="year" required>
+            <option value="">Select Year</option>
+            <option value="1">First Year</option>
+            <option value="2">Second Year</option>
+            <option value="3">Third Year</option>
+            <option value="4">Fourth Year</option>
+          </select>
+        </div>
+        <div class="form-col">
+          <select id="division" required>
+            <option value="">Select Division</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+      </div>
+      
+      <input type="text" id="rollNumberInput" placeholder="Enter your roll number (e.g., 05, 15, 25)" required>
+      <div class="hint-text">
+        <small>Your full roll number will be: <span id="rollPreview">CS-?</span></small>
+      </div>
+      
+      <div class="form-footer">
+        <button type="submit">Sign Up</button>
+        <p>Already have an account? <a href="login.html">Login</a></p>
+      </div>
+    </form>
+  </div>
+  
+  <div class="toast" id="signupToast"></div>
+  
+  <script src="js/signup.js"></script>
+</body>
+</html>

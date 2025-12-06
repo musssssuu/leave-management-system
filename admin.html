@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - Leave Dashboard</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Header with logout -->
+    <div class="header-box">
+      <div class="header-content">
+        <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+        
+        <div class="admin-menu">
+          <button id="studentsListBtn" class="menu-btn">
+            <i class="fas fa-users"></i> All Students
+          </button>
+          <button id="quotaManagementBtn" class="menu-btn">
+            <i class="fas fa-chart-pie"></i> Leave Quotas
+          </button>
+          <button id="divisionFilterBtn" class="menu-btn">
+            <i class="fas fa-filter"></i> Filter by Division
+          </button>
+        </div>
+        
+        <button id="logoutBtn" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-box">
+      <h3><i class="fas fa-chart-bar"></i> Overview</h3>
+      <div class="summary-cards">
+        <div class="summary-card total">
+          <div class="summary-content">
+            <span class="summary-count" id="totalCount">0</span>
+            <span class="summary-label">Total Applications</span>
+          </div>
+        </div>
+        
+        <div class="summary-card pending">
+          <div class="summary-content">
+            <span class="summary-count" id="pendingCount">0</span>
+            <span class="summary-label">Pending</span>
+          </div>
+        </div>
+        
+        <div class="summary-card approved">
+          <div class="summary-content">
+            <span class="summary-count" id="approvedCount">0</span>
+            <span class="summary-label">Approved</span>
+          </div>
+        </div>
+        
+        <div class="summary-card rejected">
+          <div class="summary-content">
+            <span class="summary-count" id="rejectedCount">0</span>
+            <span class="summary-label">Rejected</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Division Filter Panel -->
+    <div id="divisionFilterPanel" class="filter-panel" style="display: none;">
+      <h3><i class="fas fa-filter"></i> Filter by Division</h3>
+      <div class="division-filters">
+        <button class="division-btn active" data-division="all">All Divisions</button>
+        <button class="division-btn" data-division="A">Division A</button>
+        <button class="division-btn" data-division="B">Division B</button>
+        <button class="division-btn" data-division="C">Division C</button>
+        <button class="division-btn" data-division="D">Division D</button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-box">
+      <h3><i class="fas fa-search"></i> Filters</h3>
+      <div class="filter-controls">
+        <div class="search-control">
+          <input type="text" id="searchInput" placeholder="Search by name or roll number...">
+        </div>
+        <div class="filter-control">
+          <select id="statusFilter">
+            <option value="all">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="export-control">
+          <button id="exportBtn" class="export-btn">
+            <i class="fas fa-download"></i> Export CSV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEAVE QUOTA MANAGEMENT PANEL -->
+    <div id="quotaManagementPanel" class="quota-panel" style="display: none;">
+      <div class="panel-header">
+        <h3><i class="fas fa-chart-pie"></i> Leave Quota Management</h3>
+        <button id="closeQuotaPanel" class="close-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="quota-controls">
+        <div class="quota-setup">
+          <h4>Set Default Quotas</h4>
+          <div class="quota-inputs">
+            <div class="quota-input">
+              <label><i class="fas fa-thermometer-half"></i> Sick Leaves per Year</label>
+              <input type="number" id="sickQuota" min="0" value="12">
+            </div>
+            <div class="quota-input">
+              <label><i class="fas fa-umbrella-beach"></i> Casual Leaves per Semester</label>
+              <input type="number" id="casualQuota" min="0" value="8">
+            </div>
+            <div class="quota-input">
+              <label><i class="fas fa-exclamation-triangle"></i> Emergency Leaves per Year</label>
+              <input type="number" id="emergencyQuota" min="0" value="4">
+            </div>
+          </div>
+          <button id="applyQuotasBtn" class="quota-btn">
+            <i class="fas fa-sync-alt"></i> Apply to All Students
+          </button>
+        </div>
+        
+        <div class="individual-quota">
+          <h4>Individual Student Quota</h4>
+          <div class="student-select">
+            <select id="studentForQuota">
+              <option value="">Select Student</option>
+              <!-- Students will be populated here -->
+            </select>
+            <button id="loadStudentQuota" class="small-btn">
+              <i class="fas fa-user-check"></i> Load
+            </button>
+          </div>
+          <div id="individualQuotaForm" style="display:none;">
+            <!-- Individual quota form will appear here -->
+          </div>
+        </div>
+      </div>
+      
+      <div class="quota-stats">
+        <div class="quota-stat-card">
+          <div class="quota-stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="quota-stat-content">
+            <h4>Total Students</h4>
+            <p id="totalStudentsQuota">0</p>
+          </div>
+        </div>
+        <div class="quota-stat-card">
+          <div class="quota-stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="quota-stat-content">
+            <h4>Quotas Set</h4>
+            <p id="quotasSetCount">0</p>
+          </div>
+        </div>
+        <div class="quota-stat-card">
+          <div class="quota-stat-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="quota-stat-content">
+            <h4>Low Balance</h4>
+            <p id="lowBalanceCount">0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Students List Panel -->
+    <div id="studentsListPanel" class="students-panel" style="display: none;">
+      <div class="panel-header">
+        <h3><i class="fas fa-users"></i> All Students</h3>
+        <div class="panel-controls">
+          <div class="student-filters">
+            <select id="studentDivisionFilter">
+              <option value="all">All Divisions</option>
+              <option value="A">Division A</option>
+              <option value="B">Division B</option>
+              <option value="C">Division C</option>
+              <option value="D">Division D</option>
+            </select>
+          </div>
+          <button id="closeStudentsPanel" class="close-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="students-grid" id="studentsGrid">
+        <div class="empty-state">
+          <i class="fas fa-user-graduate"></i>
+          <p>Loading students...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student Applications -->
+    <div class="applications-box">
+      <h3><i class="fas fa-file-alt"></i> Student Applications</h3>
+      <div id="studentList">
+        <div class="empty-state" id="emptyState">
+          <i class="fas fa-inbox"></i>
+          <p>No applications found. Try adjusting your filters.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="adminToast"></div>
+
+  <script src="js/quota.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
