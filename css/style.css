@@ -1,0 +1,210 @@
+/* style.css - For login page */
+body {
+  font-family: 'Poppins', Inter, Arial, sans-serif;
+  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+  margin: 0;
+  padding: 0;
+  color: #1f2937;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.form-box {
+  width: 400px;
+  padding: 30px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  position: relative; /* Keep position stable */
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+  text-align: center;
+  color: #111827;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+input, select, button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: all 0.3s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.2);
+}
+
+input.error, select.error {
+  border-color: #ef4444;
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+  margin-top: 20px;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.form-footer p {
+  margin: 10px 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.form-footer a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+.admin-note {
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+  margin-top: 15px;
+}
+
+/* Toast - FIXED POSITION to prevent layout shift */
+.toast {
+  position: fixed !important;
+  bottom: 20px;
+  right: 20px;
+  background: #111827;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+  display: none;
+  z-index: 1000;
+  max-width: 350px;
+  word-wrap: break-word;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* For signup page specific */
+.password-hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: -5px;
+  margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .form-box {
+    width: 90%;
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .toast {
+    left: 20px;
+    right: 20px;
+    max-width: calc(100% - 40px);
+  }
+}
+/* Form row for inline fields */
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.form-col {
+  flex: 1;
+}
+
+.form-col select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  background: rgba(255,255,255,0.9);
+}
+
+/* Hint text for roll preview */
+.hint-text {
+  margin: -5px 0 15px 0;
+  padding: 8px 12px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #1e40af;
+}
+
+.hint-text small {
+  display: block;
+}
+
+#rollPreview {
+  font-weight: bold;
+  color: #1e40af;
+  background: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #93c5fd;
+}
+
+/* For student form row */
+#leaveForm .form-row {
+  display: flex;
+  gap: 10px;
+}
+
+#leaveForm .form-row input {
+  flex: 1;
+}
