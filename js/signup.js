@@ -195,7 +195,7 @@
       }, 100);
       
       setTimeout(() => {
-        window.location.href = "indexs.html";
+        window.location.href = "index.html";
       }, 2000);
     })
     .catch(error => {
@@ -242,4 +242,5 @@
 
   // Initialize roll preview
   updateRollPreview();
+
 })();
